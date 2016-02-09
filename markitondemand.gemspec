@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Markitondemand::VERSION
   spec.authors       = ["Ray"]
   spec.email         = ["ray@thelondonvandal.com"]
-  spec.summary       = %q{markitdown API gem}
-  spec.description   = %q{markitdown API gem based on json}
+  spec.summary       = %q{markitondemand API gem}
+  spec.description   = %q{markitondemand API gem based on json}
   spec.homepage      = ""
   spec.license       = "MIT"
 
