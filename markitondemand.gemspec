@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Markitondemand::VERSION
   spec.authors       = ["Ray"]
   spec.email         = ["ray@thelondonvandal.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{markitdown API gem}
+  spec.description   = %q{markitdown API gem based on json}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,4 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "coveralls"
 end
