@@ -5,7 +5,7 @@ rvm:
   - jruby
   - 2.0.0
 
-script: 'bundle exec rake'
+script: 'bundle exec rake spec'
 
 notifications:
   email:
