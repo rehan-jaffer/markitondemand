@@ -28,7 +28,15 @@ describe Markitondemand do
    end
 
    context "unsuccessful lookup request" do
-     let(:company) { Markitondemand::Company.new "AAPL" }
+       before(:each) do
+         stub_request(:any, "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=AAPL").to_return(status: 500)
+       end 
+       let(:company) { Markitondemand::Company.new "AAPL" }
+
+       it "sets the success field to false" do
+         expect(company.success?).to eq false
+       end
+
    end
 
   end
