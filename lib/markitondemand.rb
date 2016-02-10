@@ -14,13 +14,19 @@ module Markitondemand
     def initialize(symbol)
       @symbol = symbol.to_sym
       url = Markitondemand.base_url + "input=#{symbol}"
-      result = JSON.parse(Net::HTTP.get(URI.parse(url))).keep_if { |res| res["Symbol"] == symbol }.first
-      @name = result["Name"]
-      @exchange = result["Exchange"]
+      begin
+        result = JSON.parse(Net::HTTP.get(URI.parse(url))).keep_if { |res| res["Symbol"] == symbol }.first
+        @name = result["Name"]
+        @exchange = result["Exchange"]
+      rescue Exception
+        @success = false
+      else
+        @success = true
+      end
     end
 
     def success?
-      true
+      @success
     end
 
   end
