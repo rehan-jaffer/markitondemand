@@ -41,9 +41,9 @@ module Markitondemand
         @success = false
         return
       end
-      result = ResultsArray.new(result).single_company(symbol)
-      @name = result["Name"]
-      @exchange = result["Exchange"]
+      company = ResultsArray.new(result).single_company(symbol)
+      @name = company["Name"]
+      @exchange = company["Exchange"]
       @success = true
     end
 
