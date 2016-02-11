@@ -6,21 +6,57 @@ module Markitondemand
     "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?"
   end
 
+  class NoResultException < Exception
+  end
+
+  class ResultsArray
+    attr_reader :results
+
+    def initialize(results)
+      @results = results
+    end
+
+    def single_company(symbol)
+      @results.keep_if { |res| res["Symbol"] == symbol }.first
+    end
+  end
+
+  class Error
+    attr_reader :message
+
+    def initialize(message)
+      @message = message
+    end
+  end
+
   class Company
-    attr_reader :symbol, :name, :exchange
+    attr_reader :symbol, :name, :exchange, :error
 
     def initialize(symbol)
       @symbol = symbol.to_sym
       url = Markitondemand.base_url + "input=#{symbol}"
-      begin
-        result = JSON.parse(Net::HTTP.get(URI.parse(url))).keep_if { |res| res["Symbol"] == symbol }.first
-        @name = result["Name"]
-        @exchange = result["Exchange"]
-      rescue StandardException
+      result = get_result(url)
+      if result.is_a?(Error)
+        @error = result.message
         @success = false
-      else
-        @success = true
+        return
       end
+      result = ResultsArray.new(result).single_company(symbol)
+      @name = result["Name"]
+      @exchange = result["Exchange"]
+      @success = true
+    end
+
+    def get_result(url)
+      begin
+        result = JSON.parse(Net::HTTP.get(URI.parse(url)))
+      rescue TypeError
+        return Error.new("API error")
+      end
+      if result.length == 0
+        return Error.new("No results")
+      end
+      result
     end
 
     def success?
