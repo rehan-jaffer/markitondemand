@@ -84,7 +84,7 @@ describe Markitondemand do
 
       context "retrieving a single quote successfully" do
         before(:each) do
-          url = "http://dev.markitondemand.com/Api/v2/Quote?symbol=AAPL"
+          url = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=AAPL"
           stub_request(:any, url).to_return(body: stock)
         end        
 
@@ -116,13 +116,17 @@ describe Markitondemand do
           expect(stock_quote.change_percent_ytd).to eq -1.44368493773359
         end
 
-        it "returns the change percentage" do
-          expect(stock_quote.change).to eq 3.0659549018453
+        it "returns the change" do
+          expect(stock_quote.change).to eq 15.6
         end
 
-        it "returns the timestamp" do
-          expect(stock_quote.timestamp).to eq DateTime.new("Wed Oct 23 13:39:19 UTC-06:00 2013")
+        it "returns the change percentage" do
+          expect(stock_quote.change_percent).to eq 3.06549549018453
         end
+
+#        it "returns the timestamp" do
+#          expect(stock_quote.timestamp).to eq Time.strftime("Wed Oct 23 13:39:19 UTC-06:00 2013")
+#        end
 
         it "returns the MSDate" do
           expect(stock_quote.msdate).to eq 41570.568969907
@@ -130,6 +134,14 @@ describe Markitondemand do
 
         it "returns the last price as a float" do
           expect(stock_quote.last_price).to be_a_kind_of Float
+        end
+
+        it "returns the change as a float" do
+          expect(stock_quote.change).to be_a_kind_of Float
+        end
+
+        it "returns the change percentage as a float" do
+          expect(stock_quote.change_percent).to be_a_kind_of Float
         end
 
 
