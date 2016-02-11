@@ -30,16 +30,26 @@ module Markitondemand
   end
 
   class StockQuote
-    attr :success, :symbol, :timestamp, :msdate, :last_price, :change, :change_ytd, :change_percent, :change_percent_ytd
+    attr :success, :symbol, :timestamp, :msdate, :last_price, :change, :change_ytd, :change_percent, :change_percent_ytd, :volume, :market_cap
 
     def initialize(symbol)
       @symbol = symbol.to_sym
-      url = Markitondemand.base_url("Quote") + "input=#{symbol}"
+      url = Markitondemand.base_url("Quote") + "symbol=#{symbol}"
       result = get_result(url)
       if result.is_a?(Error)
         @error = result.message
         @success = false
       end
+#      @timestamp = Time.strftime(result["Timestamp"])
+      @msdate = result["MSDate"]
+      @last_price = result["LastPrice"]
+      @change = result["Change"]
+      @change_ytd = result["ChangeYTD"]
+      @change_percent = result["ChangePercent"]
+      @change_percent_ytd = result["ChangePercentYTD"]
+      @volume = result["Volume"]
+      @market_cap = result["MarketCap"]
+      @success = true
     end
 
     def get_result(url)
