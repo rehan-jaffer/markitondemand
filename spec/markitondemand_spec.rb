@@ -61,5 +61,83 @@ describe Markitondemand do
   end
 
   describe "stock quote API" do
+
+     let(:stock) {
+       {
+       "Name" => "Apple Inc",    
+       "Symbol" => "AAPL",
+       "LastPrice" => 524.49,
+       "Change" => 15.6,
+       "ChangePercent" => 3.06549549018453,
+       "Timestamp" => "Wed Oct 23 13:39:19 UTC-06:00 2013",
+       "MSDate" => 41570.568969907,
+       "MarketCap" => 476497591530,
+       "Volume" => 397562,
+       "ChangeYTD" => 532.1729,
+       "ChangePercentYTD" => -1.44368493773359,
+       "High" => 52499,
+       "Low" => 519.175,
+       "Open" => 519.175
+       }.to_json
+       }
+      let(:stock_quote) { Markitondemand::StockQuote.new "AAPL" }
+
+      context "retrieving a single quote successfully" do
+        before(:each) do
+          url = "http://dev.markitondemand.com/Api/v2/Quote?symbol=AAPL"
+          stub_request(:any, url).to_return(body: stock)
+        end        
+
+        it "sets the success field to true" do
+          expect(stock_quote.success?).to eq true
+        end
+
+        it "returns the stock symbol as a symbol" do
+          expect(stock_quote.symbol).to eq :AAPL
+        end
+
+        it "returns the last price" do
+          expect(stock_quote.last_price).to eq 524.49
+        end
+
+        it "returns the market cap" do
+          expect(stock_quote.market_cap).to eq 476497591530
+        end
+
+        it "returns the volume" do
+          expect(stock_quote.volume).to eq 397562
+        end
+
+        it "returns the change YTD" do
+          expect(stock_quote.change_ytd).to eq 532.1729
+        end
+
+        it "returns the change percent YTD" do
+          expect(stock_quote.change_percent_ytd).to eq -1.44368493773359
+        end
+
+        it "returns the change percentage" do
+          expect(stock_quote.change).to eq 3.0659549018453
+        end
+
+        it "returns the timestamp" do
+          expect(stock_quote.timestamp).to eq DateTime.new("Wed Oct 23 13:39:19 UTC-06:00 2013")
+        end
+
+        it "returns the MSDate" do
+          expect(stock_quote.msdate).to eq 41570.568969907
+        end
+
+        it "returns the last price as a float" do
+          expect(stock_quote.last_price).to be_a_kind_of Float
+        end
+
+
+        it "returns the change as a float" do
+          expect(stock_quote.change).to be_a_kind_of Float
+        end
+      end
+
   end
+
 end
