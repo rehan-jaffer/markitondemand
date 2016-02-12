@@ -40,7 +40,7 @@ module Markitondemand
         @error = result.message
         @success = false
       end
-#      @timestamp = Time.strftime(result["Timestamp"])
+      #      @timestamp = Time.strftime(result["Timestamp"])
       @msdate = result["MSDate"]
       @last_price = result["LastPrice"]
       @change = result["Change"]
@@ -62,7 +62,6 @@ module Markitondemand
     def success?
       @success
     end
-
   end
 
   class Company
