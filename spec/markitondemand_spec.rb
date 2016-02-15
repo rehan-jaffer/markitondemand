@@ -150,16 +150,16 @@ describe Markitondemand do
     context "failed to retrieve a stock quote (not found)" do
       before(:each) do
         error_response = { "Message" => "No Match." }.to_json
-        stub_request(:any, "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input=AAPL").to_return(body: error_response)
+        stub_request(:any, "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol=AAPL").to_return(body: error_response)
       end
-      let(:stock_quote) { StockQuote.new "AAPL" }
+      let(:stock_quote) { Markitondemand::StockQuote.new "AAPL" }
 
       it "has a failed success status" do
         expect(stock_quote.success?).to eq false
       end
 
       it "returns the error message from the API" do
-        expect(stock.quote.error_message).to eq "No Match"
+        expect(stock_quote.error_message).to eq "No Match"
       end
     end
     context "failed to retrieve a stock quote (500 error)" do
