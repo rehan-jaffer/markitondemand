@@ -30,7 +30,7 @@ module Markitondemand
   end
 
   class StockQuote
-    attr :success, :symbol, :timestamp, :msdate, :last_price, :change, :change_ytd, :change_percent, :change_percent_ytd, :volume, :market_cap
+    attr :success, :symbol, :timestamp, :msdate, :last_price, :change, :change_ytd, :change_percent, :change_percent_ytd, :volume, :market_cap, :error
 
     def initialize(symbol)
       @symbol = symbol.to_sym
@@ -39,6 +39,7 @@ module Markitondemand
       if result.is_a?(Error)
         @error = result.message
         @success = false
+        return
       end
       #      @timestamp = Time.strftime(result["Timestamp"])
       @msdate = result["MSDate"]
@@ -55,6 +56,11 @@ module Markitondemand
     def get_result(url)
       begin
         result = JSON.parse(Net::HTTP.get(URI.parse(url)))
+      rescue StandardException
+        return Error.new("API Error")
+      end
+      if result.respond_to?(:has_key?) && result.has_key?("Message")
+        return Error.new("No results.")
       end
       result
     end
