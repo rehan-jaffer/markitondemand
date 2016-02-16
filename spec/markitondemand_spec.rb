@@ -159,7 +159,7 @@ describe Markitondemand do
       end
 
       it "returns the error message from the API" do
-        expect(stock_quote.error_message).to eq "No Match"
+        expect(stock_quote.error).to eq "No results."
       end
     end
     context "failed to retrieve a stock quote (500 error)" do
